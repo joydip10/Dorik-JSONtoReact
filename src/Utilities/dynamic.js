@@ -1,3 +1,6 @@
+const capitalizeFirst = (str) => {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+};
 export const dynamic = (data, classes, tags) => {
   const centralProps = [];
 
@@ -5,9 +8,9 @@ export const dynamic = (data, classes, tags) => {
     if (tags[i] !== "form") {
       const selectedClass = classes[i];
       const selectedTag = tags[i];
-      if (data[i].type === "heading" || data[i].type === "text") {
+      if (data[i].type === "heading" || data[i]?.type === "text") {
         const props = {
-          type: "text",
+          type: capitalizeFirst(data[i]?.type),
           tag: selectedTag,
           className: selectedClass,
           content: data[i].content,
@@ -16,7 +19,7 @@ export const dynamic = (data, classes, tags) => {
       }
       if (data[i].type === "image") {
         const props = {
-          type: "img",
+          type: capitalizeFirst(data[i]?.type),
           tag: selectedTag,
           className: selectedClass,
           src: data[i].attr.src,
@@ -33,10 +36,12 @@ export const dynamic = (data, classes, tags) => {
       const items = data[i].form.fields.items;
       const itemComponents = items.map((item) => {
         return {
+          type: capitalizeFirst("input"),
           id: item?.id,
           placeholder: item?.attr?.placeholder,
           className: classes[i][1],
           tag: "input",
+          label: item?.label,
         };
       });
 
@@ -46,10 +51,11 @@ export const dynamic = (data, classes, tags) => {
         content: button.content,
         className: classes[i][2],
         tag: "button",
+        type: capitalizeFirst("button"),
       };
 
       const props = {
-        type: "form",
+        type: capitalizeFirst("form"),
         tag: selectedTag,
         className: selectedClass,
         itemComponents,
